@@ -1,6 +1,9 @@
 package familyaccounting;
 
+import java.time.LocalDate;
 import java.util.*; //will need that for comparator
+
+import familyaccounting.Transaction;
 
 // Class for managing all transactions
 public class FamilyAccountingApp {
@@ -9,18 +12,30 @@ public class FamilyAccountingApp {
 	// List of family members
 	private List<FamilyMember> familyMembers = new ArrayList<>();
 
-	// Method to add an expense
-	public void addExpense(double amount, String category, String memberName) {
-		// Get or create a family member -- Maybe rethink this with option in main
-		// Add a new expense to the transaction list
+	private List<String> categoriesExpInc = new ArrayList<>();
+
+	public FamilyAccountingApp() {
+		categoriesExpInc.addAll(List.of("food", "rent", "transport", "entertainment", "healthcare", "childcare"));
 	}
 
-	// Method to add income
-	public void addIncome(double amount, String category, String memberName) {
-		// Get or create a family member
-		// Add a new income to the transaction list
+	public void addTransaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member) {
+		transactions.add(new Transaction (amount, categoryExpInc, date, member));
+		addCategoryExpInc(categoryExpInc);
+	}
+	
+	// Method to add a new category
+	public void addCategoryExpInc(String categoryExpInc) {
+		String lowerCategoryExpInc = categoryExpInc.toLowerCase();
+		if (!categoriesExpInc.contains(lowerCategoryExpInc)) {
+			categoriesExpInc.add(lowerCategoryExpInc);
+		}
 	}
 
+	public List<String> getCategoriesExpInc() {
+		return categoriesExpInc;
+	}
+	
+	
 	// Method to view transactions sorted by category (use
 	// transactions.sort(Comparator.comparing( to getCAtegory - getter from the
 	// transation)

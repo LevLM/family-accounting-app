@@ -5,38 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Abstract class for transactions (expenses and income)
-public abstract class Transaction {
+public class Transaction {
 	// Fields for storing transaction data
 	protected double amount;
 	protected String categoryExpInc;
 	protected LocalDate date;
 	protected FamilyMember member;
 
-	private static List<String> categoriesExpInc = new ArrayList<>();
-
 	// Constructors for transaction
 	public Transaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member) {
 		this.amount = amount;
 		this.date = date;
 		this.member = member;
-		this.categoryExpInc = categoryExpInc.toLowerCase();
-		addCategoryExpInc(this.categoryExpInc);
-	}
-
-	static {
-		categoriesExpInc.addAll(List.of("food", "rent", "transport", "entertainment", "healthcare"));
-	}
-
-	// Method to add a new category
-	public static void addCategoryExpInc(String categoryExpInc) {
-		String lowerCategoryExpInc = categoryExpInc.toLowerCase();
-		if (!categoriesExpInc.contains(lowerCategoryExpInc)) {
-			categoriesExpInc.add(lowerCategoryExpInc);
-		}
-	}
-
-	public static List<String> getCategoriesExpInc() {
-		return categoriesExpInc;
+		this.categoryExpInc = categoryExpInc;
 	}
 
 	// Getters and setters
