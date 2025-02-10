@@ -43,30 +43,6 @@ public class FamilyAccountingApp {
 	public void viewTransactionsSortedByCategory() {
         //TO-DO sort by category
 	}
-
-//	// Method to view transactions sorted by date - DELETE THIS
-//	public void viewTransactionsSortedByDate() {
-//	    transactions.sort(Comparator.comparing(Transaction::getDate));
-//	    for (Transaction t : transactions) {
-//	        System.out.println(t);
-//	    }
-//	}
-//	
-//	// Method to view transactions for a period - DELETE THIS
-//	public void viewTransactionsForPeriod() {
-//	    
-//	    //asking for the first date of the period //TO-DO change it to picking a month later, or having better way of choosing date then entering it by hand
-//	    System.out.print("Enter start date (YYYY-MM-DD): ");
-//	    LocalDate startDate = LocalDate.parse(scanner.nextLine()); //parsing user input into data
-//	    //asking for the last date of the period //TO-DO same as above
-//	    System.out.print("Enter end date (YYYY-MM-DD): ");
-//	    LocalDate endDate = LocalDate.parse(scanner.nextLine());
-//	    
-//	    transactions.stream()  // Convert the 'transactions' collection to a stream for further processing.
-//	    	.filter(t -> !t.getDate().isBefore(startDate) && !t.getDate().isAfter(endDate))  // Filter transactions: keep only those whose date is within the range [startDate, endDate] (inclusive).
-//	    	.sorted(Comparator.comparing(Transaction::getDate))  // Sort the filtered transactions by date in ascending order.
-//	    	.forEach(System.out::println);  // For each sorted transaction, print it to the console.
-//	}
 	
 	//Here's result of: TO-DO figure out if we need both viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can keep one or even make on method out of both
 	public void viewTransactionsByDate() { 
