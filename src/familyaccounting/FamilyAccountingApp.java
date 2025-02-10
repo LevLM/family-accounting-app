@@ -19,9 +19,13 @@ public class FamilyAccountingApp {
 		categoriesExpInc.addAll(List.of("food", "rent", "transport", "entertainment", "healthcare", "childcare"));
 	}
 
-	public void addTransaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member) {
-		transactions.add(new Transaction (amount, categoryExpInc, date, member));
-		addCategoryExpInc(categoryExpInc);
+	public void addTransaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member, boolean isIncome) {
+	    // creating family member
+	    FamilyMember existingMember = getOrCreateFamilyMember(member.getName());
+	    // adding transaction
+	    transactions.add(new Transaction(amount, categoryExpInc, date, existingMember, isIncome));
+	    // adding cat if doesn not exist
+	    addCategoryExpInc(categoryExpInc);
 	}
 	
 	// Method to add a new category
@@ -38,11 +42,10 @@ public class FamilyAccountingApp {
 	
 	
 	// Method to view transactions sorted by category (use
-	// transactions.sort(Comparator.comparing( to getCAtegory - getter from the
-	// transation)
-	public void viewTransactionsSortedByCategory() {
-        //TO-DO sort by category
-	}
+    public void viewTransactionsSortedByCategory() {
+        transactions.sort(Comparator.comparing(Transaction::getCategoryExpInc));
+        transactions.forEach(System.out::println);
+    }
 	
 	//Here's result of: TO-DO figure out if we need both viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can keep one or even make on method out of both
 	public void viewTransactionsByDate() { 
@@ -79,10 +82,15 @@ public class FamilyAccountingApp {
 	}
 
 	// Method to get or create a family member
-	private FamilyMember getOrCreateFamilyMember(String name) {
-		return null; // TO-DO change this (I put it there for this non void function to have a
-						// return) // probably need to rethink whole thing
-		// Find a family member by name or create a new one if not found
-
+	public FamilyMember getOrCreateFamilyMember(String name) {
+	    for (FamilyMember member : familyMembers) {
+	        if (member.getName().equalsIgnoreCase(name)) {
+	            return member;
+	        }
+	    }
+	    FamilyMember newMember = new FamilyMember(name);
+	    familyMembers.add(newMember);
+	    return newMember;
 	}
 }
+

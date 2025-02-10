@@ -11,31 +11,36 @@ public class Transaction {
 	protected String categoryExpInc;
 	protected LocalDate date;
 	protected FamilyMember member;
+    private final boolean isIncome;
 
 	// Constructors for transaction
-	public Transaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member) {
-		this.amount = amount;
-		this.date = date;
-		this.member = member;
-		this.categoryExpInc = categoryExpInc;
-	}
+    public Transaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member, boolean isIncome) {
+        this.amount = amount;
+        this.categoryExpInc = categoryExpInc;
+        this.date = date;
+        this.member = member;
+        this.isIncome = isIncome;
+    }
 
-	// Getters and setters
-	public double getAmount() {
-		return amount;
-	}
+    public double getAmount() {
+        return amount;
+    }
 
-	public String getCategoryExpInc() {
-		return categoryExpInc;
-	}
+    public String getCategoryExpInc() {
+        return categoryExpInc;
+    }
 
-	public LocalDate getDate() {
-		return date;
-	}
+    public LocalDate getDate() {
+        return date;
+    }
 
-	public FamilyMember getMember() {
-		return member;
-	}
+    public FamilyMember getMember() {
+        return member;
+    }
+
+    public boolean isIncome() {
+        return isIncome;
+    }
 
 	// Override for toString for data output (about the transaction)
 	@Override
