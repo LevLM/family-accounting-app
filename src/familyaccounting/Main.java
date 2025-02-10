@@ -32,12 +32,10 @@ public class Main {
 		// Loop for user interaction
 		while (true) {
 			// Display menu options
-			System.out.println("1 - Enter transaction of expenses or incomes,"
-					+ " 2 - All transactions sorted by date,"
+			System.out.println("1 - Enter transaction of expenses or incomes," + " 2 - All transactions sorted by date,"
 					+ " 3 - Expenses/incomes by category for the period,"
 					+ " 4 - Expenses/incomes by members for the period,"
-					+ " 5 - Balanse of Expenses/Incomes for the period,"
-					+ " 6 - Exit");
+					+ " 5 - Balanse of Expenses/Incomes for the period," + " 6 - Exit");
 			// Read user choice
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -69,7 +67,7 @@ public class Main {
 			case 5:
 				double balance = app.viewIncomeVsExpensesForPeriod();
 				if (balance > 0) {
-					System.out.println("Balanse of incomes and expenses - Positive"); 
+					System.out.println("Balanse of incomes and expenses - Positive");
 				} else if (balance < 0) {
 					System.out.println("Balanse of incomes and expenses - Negative");
 				} else {
