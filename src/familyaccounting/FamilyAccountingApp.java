@@ -44,30 +44,57 @@ public class FamilyAccountingApp {
         //TO-DO sort by category
 	}
 
-	// Method to view transactions sorted by date
-	public void viewTransactionsSortedByDate() {
-	    transactions.sort(Comparator.comparing(Transaction::getDate));
-	    for (Transaction t : transactions) {
-	        System.out.println(t);
-	    }
-	}
+//	// Method to view transactions sorted by date - DELETE THIS
+//	public void viewTransactionsSortedByDate() {
+//	    transactions.sort(Comparator.comparing(Transaction::getDate));
+//	    for (Transaction t : transactions) {
+//	        System.out.println(t);
+//	    }
+//	}
+//	
+//	// Method to view transactions for a period - DELETE THIS
+//	public void viewTransactionsForPeriod() {
+//	    
+//	    //asking for the first date of the period //TO-DO change it to picking a month later, or having better way of choosing date then entering it by hand
+//	    System.out.print("Enter start date (YYYY-MM-DD): ");
+//	    LocalDate startDate = LocalDate.parse(scanner.nextLine()); //parsing user input into data
+//	    //asking for the last date of the period //TO-DO same as above
+//	    System.out.print("Enter end date (YYYY-MM-DD): ");
+//	    LocalDate endDate = LocalDate.parse(scanner.nextLine());
+//	    
+//	    transactions.stream()  // Convert the 'transactions' collection to a stream for further processing.
+//	    	.filter(t -> !t.getDate().isBefore(startDate) && !t.getDate().isAfter(endDate))  // Filter transactions: keep only those whose date is within the range [startDate, endDate] (inclusive).
+//	    	.sorted(Comparator.comparing(Transaction::getDate))  // Sort the filtered transactions by date in ascending order.
+//	    	.forEach(System.out::println);  // For each sorted transaction, print it to the console.
+//	}
 	
-	// Method to view transactions for a period
-	public void viewTransactionsForPeriod() {
+	//Here's result of: TO-DO figure out if we need both viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can keep one or even make on method out of both
+	public void viewTransactionsByDate() { 
+	    Scanner scanner = new Scanner(System.in);
 	    
-	    //asking for the first date of the period //TO-DO change it to picking a month later, or having better way of choosing date then entering it by hand
-	    System.out.print("Enter start date (YYYY-MM-DD): ");
-	    LocalDate startDate = LocalDate.parse(scanner.nextLine()); //parsing user input into data
-	    //asking for the last date of the period //TO-DO same as above
-	    System.out.print("Enter end date (YYYY-MM-DD): ");
-	    LocalDate endDate = LocalDate.parse(scanner.nextLine());
+	    // asking for the first date of the period or skip //TO-DO change it to picking a month later, or having better way of choosing date then entering it by hand
+	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+	    String startInput = scanner.nextLine();
 	    
-	    transactions.stream()  // Convert the 'transactions' collection to a stream for further processing.
-	    	.filter(t -> !t.getDate().isBefore(startDate) && !t.getDate().isAfter(endDate))  // Filter transactions: keep only those whose date is within the range [startDate, endDate] (inclusive).
-	    	.sorted(Comparator.comparing(Transaction::getDate))  // Sort the filtered transactions by date in ascending order.
-	    	.forEach(System.out::println);  // For each sorted transaction, print it to the console.
+	    // asking for the last date of the period or to skip //TO-DO same as above
+	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+	    String endInput = scanner.nextLine();
+
+	    // Is user etnered the data - parse it to LocalDate, else keep it null
+	    LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+	    LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+
+	    // Filter transactions is startDate or endDate is null, filter ignores those
+	    transactions.stream()
+	        .filter(t -> (startDate == null || !t.getDate().isBefore(startDate)) &&  
+	                     (endDate == null || !t.getDate().isAfter(endDate)))
+	        // sort by date
+	        .sorted(Comparator.comparing(Transaction::getDate))
+	        // shot transactions
+	        .forEach(System.out::println);
+	    
+	    //TO-DO maybe return the result rather than print it (but this method already prints stuff
 	}
-	//TO-DO figure out if we need both viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can keep one or even make on method out of both
 
 	// Method to view transactions sorted by family member
 	public void viewTransactionsSortedByMember() {
