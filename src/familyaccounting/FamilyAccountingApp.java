@@ -61,13 +61,14 @@ public class FamilyAccountingApp {
 	    }
 	
 	
-	// Method to view transactions sorted by category (use
-	  public void viewTransactionsSortedByCategory() {
-		    transactions.sort(Comparator.comparing(Transaction::getCategoryExpInc));
-		    for (Transaction transaction : transactions) {
-		        System.out.println(transaction);
-		    }
-		}
+//	// Method to view transactions sorted by category (use
+//	  public void viewTransactionsSortedByCategory() {
+//		    transactions.sort(Comparator.comparing(Transaction::getCategoryExpInc));
+//		    for (Transaction transaction : transactions) {
+//		        System.out.println(transaction);
+//		    }
+//		}
+//	  DO-TO probably won't really need this. And it doesn't work, bro. Like all of this right now. 
 
 	
 	//Here's result of: TO-DO figure out if we need both viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can keep one or even make on method out of both
@@ -134,6 +135,136 @@ public class FamilyAccountingApp {
         Category newCategory = new Category(name);
         categories.add(newCategory);
         return newCategory;
+    }
+	
+    // Sets a budget for a specific category
+    public void setCategoryBudget(String categoryName, double budget) {
+        Category category = getOrCreateCategory(categoryName);
+        category.setBudget(budget);
+    }
+    
+    // Checks if a category budget is exceeded for this month
+    public void checkBudgetWarning(Category category, double amount) {
+    	//if budget if no ) we calculate sum for the budget for this month
+        if (category.getBudget() > 0) {
+        	//current date
+            LocalDate now = LocalDate.now();
+            
+            // checking beginning and the end of this month
+            LocalDate startOfMonth = now.withDayOfMonth(1); // First day of the month
+            LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth()); // Last day of the month
+            
+            //Use calculateCategorySumForPeriod - for this month
+            double totalSpentThisMonth = calculateCategorySumForPeriod(category, startOfMonth, endOfMonth);
+            //check if limit for this month is exceeded 
+            if (totalSpentThisMonth + amount > category.getBudget()) {
+                System.out.println("Warning: Budget for category " + category.getName() + " is exceeded this month!");
+            }
+            // TO-DO think if we should warn maybe before before limit exceeded. 
+        }
+    }
+    
+    // Calculates total expenses for a category within a given date range - USE THIS
+    public double calculateCategorySumForPeriod(Category category, LocalDate startDate, LocalDate endDate) {
+        double total = 0.0; // Creating a varible to store total
+
+        // Cycle through each transaction in the transactions list
+        for (Transaction transaction : transactions) {
+            // Check if the category matches and the transaction is not income
+            if (transaction.getCategoryExpInc().equals(category) && !transaction.isIncome()) {
+                
+                // Check if the transaction within the specified date range
+                boolean isWithinDateRange = (startDate == null || !transaction.getDate().isBefore(startDate)) &&
+                                            (endDate == null || !transaction.getDate().isAfter(endDate));
+                
+                // If the transaction is within the date range, add its amount to the total
+                if (isWithinDateRange) {
+                    total += transaction.getAmount(); // Add the transaction amount to total
+                }
+            }
+        }
+
+        return total; // Return the total expense amount
+    }
+
+    // shows expenses per category for a selected period
+    public void viewExpensesByCategoryForPeriod() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Asking for the first date of the period or skipping
+	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+	    String startInput = scanner.nextLine();
+	    
+	    // Asking for the last date of the period or skipping
+	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+	    String endInput = scanner.nextLine();
+
+        // If the user didn't provide a date, assign null to the respective variable
+        LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+        LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+
+        // Creating a list to store pairs of "category - total expenses"
+//        List<Object[]> categorySums = new ArrayList<>();
+
+        // Iterating over all categories
+//        for (Category category : categories) {
+         // Calculating the total expenses for the category within the specified period
+        // Adding the "category - sum" pair to the list
+        // Sorting the list by the total expenses (from highest to lowest)
+        // Outputting the result
+        System.out.println("this is viewExpensesByCategoryForPeriod, that doesn't work ATM");
+    }
+    	//TO-DO DOESN'T WORK
+
+    	// Calculates the difference between total income and total expenses for a selected period
+    public double viewIncomeVsExpensesForPeriod() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Asking for the first date of the period or skipping
+	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+	    String startInput = scanner.nextLine();
+	    
+	    // Asking for the last date of the period or skipping
+	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+	    String endInput = scanner.nextLine();
+
+        // If the user didn't provide a date, assign null to the respective variable
+        LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+        LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+
+        // Variables to store total income and total expenses
+        double totalIncome = 0;
+        double totalExpenses = 0;
+
+        // Iterate through all transactions
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+
+            // Check if the transaction is within the selected period
+            boolean isWithinPeriod = (startDate == null || !transactionDate.isBefore(startDate)) &&
+                                     (endDate == null || !transactionDate.isAfter(endDate));
+
+            if (isWithinPeriod) {
+                if (transaction.isIncome()) {
+                    // Add to total income if it's an income transaction
+                    totalIncome += transaction.getAmount();
+                } else {
+                    // Add to total expenses if it's an expense transaction
+                    totalExpenses += transaction.getAmount();
+                }
+            }
+        }
+
+        // Calculate the balance (income - expenses)
+        double balance = totalIncome - totalExpenses;
+
+        // Output the total income, total expenses, and balance
+        System.out.println("Total Income: " + totalIncome);
+        System.out.println("Total Expenses: " + totalExpenses);
+        System.out.println("Balance: " + balance);
+
+        // Return the calculated balance
+        return balance;
     }
 }
 
