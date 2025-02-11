@@ -62,7 +62,7 @@ public class Main {
 				app.viewExpensesByCategoryForPeriod();
 				break;
 			case 4:
-//				app.viewExpensesByFamilyMemberForPeriod();
+				app.viewExpensesByFamilyMemberForPeriod();
 				break;
 			case 5:
 				double balance = app.viewIncomeVsExpensesForPeriod();
