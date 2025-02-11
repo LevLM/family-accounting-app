@@ -8,13 +8,13 @@ import java.util.List;
 public class Transaction {
 	// Fields for storing transaction data
 	protected double amount;
-	protected String categoryExpInc;
+	protected Category categoryExpInc;
 	protected LocalDate date;
 	protected FamilyMember member;
 	private final boolean isIncome;
 
 	// Constructors for transaction
-	public Transaction(double amount, String categoryExpInc, LocalDate date, FamilyMember member, boolean isIncome) {
+	public Transaction(double amount, Category categoryExpInc, LocalDate date, FamilyMember member, boolean isIncome) {
 		this.amount = amount;
 		this.categoryExpInc = categoryExpInc;
 		this.date = date;
@@ -26,7 +26,7 @@ public class Transaction {
 		return amount;
 	}
 
-	public String getCategoryExpInc() {
+	public Category getCategoryExpInc() {
 		return categoryExpInc;
 	}
 
