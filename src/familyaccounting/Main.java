@@ -32,7 +32,7 @@ public class Main {
 		// Loop for user interaction
 		while (true) {
 			// Display menu options
-			System.out.println("1 - Enter transaction of expenses or incomes\n"
+			System.out.println("\n1 - Enter transaction of expenses or incomes\n"
 					+ "2 - All transactions sorted by date\n" + "3 - Expenses/incomes by category for the period\n"
 					+ "4 - Expenses/incomes by members for the period\n"
 					+ "5 - Balanse of Expenses/Incomes for the period\n" + "6 - Exit");
@@ -62,7 +62,7 @@ public class Main {
 				app.viewExpensesByCategoryForPeriod();
 				break;
 			case 4:
-				app.viewExpensesByFamilyMemberForPeriod();
+//				app.viewExpensesByFamilyMemberForPeriod();
 				break;
 			case 5:
 				double balance = app.viewIncomeVsExpensesForPeriod();
