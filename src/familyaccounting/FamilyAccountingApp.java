@@ -4,8 +4,6 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.util.*; //will need that for comparator
 
-import familyaccounting.Transaction;
-
 // Class for managing all transactions
 public class FamilyAccountingApp {
 	Scanner scanner = new Scanner(System.in); // TO-DO figure out where to create scanner - probably should be in one
@@ -70,7 +68,6 @@ public class FamilyAccountingApp {
 	// viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can
 	// keep one or even make on method out of both
 	public void viewTransactionsByDate() {
-		Scanner scanner = new Scanner(System.in);
 
 		// Asking for the first date of the period or skipping
 		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
@@ -194,7 +191,6 @@ public class FamilyAccountingApp {
 
     // shows expenses per category for a selected period
 	public void viewExpensesByCategoryForPeriod() {
-	    Scanner scanner = new Scanner(System.in);
 
 	    // Ask the user for the start and end dates
 	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
@@ -229,7 +225,6 @@ public class FamilyAccountingApp {
 	// Calculates the difference between total income and total expenses for a
 	// selected period
 	public double viewIncomeVsExpensesForPeriod() {
-		Scanner scanner = new Scanner(System.in);
 
 		// Asking for the first date of the period or skipping
 		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
@@ -265,6 +260,8 @@ public class FamilyAccountingApp {
 				}
 			}
 		}
+		
+		
 
 		// Calculate the balance (income - expenses)
 		double balance = totalIncome - totalExpenses;
@@ -276,5 +273,46 @@ public class FamilyAccountingApp {
 
 		// Return the calculated balance
 		return balance;
+	}
+	
+	public void viewExpensesByFamilyMemberForPeriod() {
+	 
+	    // Ask the user for the start and end dates of the period
+	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+	    String startInput = scanner.nextLine();
+	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+	    String endInput = scanner.nextLine();
+	 
+	    // Convert the input to dates or keep them null if the user skips
+	    LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+	    LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+	 
+	    // Create a Map to store the total expenses for each family member
+	    Map<FamilyMember, Double> memberExpenses = new HashMap<>();
+	 
+	    // Iterate through all transactions and sum up expenses for each family member
+	    for (Transaction transaction : transactions) {
+	        // Check if the transaction is an expense and falls within the specified period
+	        if (!transaction.isIncome() && 
+	            (startDate == null || !transaction.getDate().isBefore(startDate)) &&
+	            (endDate == null || !transaction.getDate().isAfter(endDate))) {
+	 
+	            // Get the family member from the transaction
+	            FamilyMember member = transaction.getMember();
+	 
+	            // Add the transaction amount to the total expenses of the family member
+	            memberExpenses.put(member, memberExpenses.getOrDefault(member, 0.0) + transaction.getAmount());
+	        }
+	    }
+	 
+	    // Sort the family members by total expenses (in descending order)
+	    List<Map.Entry<FamilyMember, Double>> sortedList = new ArrayList<>(memberExpenses.entrySet());
+	    sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+	 
+	    // Print the result
+	    System.out.println("Expenses by family member for the selected period:");
+	    for (Map.Entry<FamilyMember, Double> entry : sortedList) {
+	        System.out.println(entry.getKey().getName() + " / " + entry.getValue());
+	    }
 	}
 }
