@@ -215,7 +215,7 @@ public class FamilyAccountingApp {
 	        categorySums.put(category, sum);
 	    }
 
-	    // Sort categories by total expenses (descending order) -using hashmap instead of object (cause I actually understand what is happening
+	    // Sort categories by total expenses (descending order) -using hashmap instead of object (cause I actually understand what is happening) DELETE THIS
 	    List<Map.Entry<Category, Double>> sortedList = new ArrayList<>(categorySums.entrySet());
 	    sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
 
