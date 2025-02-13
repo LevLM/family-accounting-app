@@ -192,34 +192,39 @@ public class FamilyAccountingApp {
 		return total; // Return the total expense amount
 	}
 
-	// shows expenses per category for a selected period
+    // shows expenses per category for a selected period
 	public void viewExpensesByCategoryForPeriod() {
-		Scanner scanner = new Scanner(System.in);
+	    Scanner scanner = new Scanner(System.in);
 
-		// Asking for the first date of the period or skipping
-		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-		String startInput = scanner.nextLine();
+	    // Ask the user for the start and end dates
+	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+	    String startInput = scanner.nextLine();
+	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+	    String endInput = scanner.nextLine();
 
-		// Asking for the last date of the period or skipping
-		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-		String endInput = scanner.nextLine();
+	    // Convert input to dates or assign null if skipped
+	    LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+	    LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
 
-		// If the user didn't provide a date, assign null to the respective variable
-		LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
-		LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+	    // Store category expenses in a map
+	    Map<Category, Double> categorySums = new HashMap<>();
 
-		// Creating a list to store pairs of "category - total expenses"
-//        List<Object[]> categorySums = new ArrayList<>();
+	    // Calculate total expenses for each category
+	    for (Category category : categories) {
+	        double sum = calculateCategorySumForPeriod(category, startDate, endDate);
+	        categorySums.put(category, sum);
+	    }
 
-		// Iterating over all categories
-//        for (Category category : categories) {
-		// Calculating the total expenses for the category within the specified period
-		// Adding the "category - sum" pair to the list
-		// Sorting the list by the total expenses (from highest to lowest)
-		// Outputting the result
-		System.out.println("this is viewExpensesByCategoryForPeriod, that doesn't work ATM");
+	    // Sort categories by total expenses (descending order) -using hashmap instead of object (cause I actually understand what is happening
+	    List<Map.Entry<Category, Double>> sortedList = new ArrayList<>(categorySums.entrySet());
+	    sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+
+	    // Print the result
+	    for (Map.Entry<Category, Double> entry : sortedList) {
+	        System.out.println(entry.getKey().getName() + " / " + entry.getValue());
+	    }
 	}
-	// TO-DO DOESN'T WORK
+	// TO-DO test this properly
 
 	// Calculates the difference between total income and total expenses for a
 	// selected period
