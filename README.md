@@ -1,5 +1,3 @@
-# Untitled
-
 # Family Accounting App
 
 A simple command-line Java application for tracking family expenses and incomes. Users can add transactions, view records by date, category, and family member, and analyze the balance of incomes and expenses.
