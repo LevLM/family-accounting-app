@@ -75,7 +75,7 @@ To add a new transaction:
 familyaccounting/
 │── Main.java               # Entry point of the application
 │── FamilyAccountingApp.java # Core logic for managing transactions
-│── Transaction.java         # Abstract class for transactions
+│── Transaction.java         # Represents a transaction (expense or income)
 │── FamilyMember.java        # Represents a family member
 │── Category.java            # Represents a transaction category
 
