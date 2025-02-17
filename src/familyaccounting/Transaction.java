@@ -15,6 +15,19 @@ public class Transaction {
 
 	// Constructors for transaction
 	public Transaction(double amount, Category categoryExpInc, LocalDate date, FamilyMember member, boolean isIncome) {
+		if (amount < 0) {
+            throw new IllegalArgumentException("Transaction amount cannot be negative");
+        }
+        if (categoryExpInc == null) {
+            throw new IllegalArgumentException("Transaction must have a category");
+        }
+        if (date == null) {
+            date = LocalDate.now(); // Default to today if date is null
+        }
+        if (member == null) {
+            throw new IllegalArgumentException("Transaction must be assigned to a family member.");
+        }
+
 		this.amount = amount;
 		this.categoryExpInc = categoryExpInc;
 		this.date = date;

@@ -5,6 +5,9 @@ public class Category {
 	private double budget;
 
 	public Category(String name) {
+		if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Category name cannot be empty or null");
+        }
 		this.name = name;
 		this.budget = 0; // budget isn't set
 	}
@@ -18,6 +21,9 @@ public class Category {
 	}
 
 	public void setBudget(double budget) {
+		if (budget < 0) {
+			throw new IllegalArgumentException("Budget cannot be negative");
+		}
 		this.budget = budget;
 	}
 
