@@ -1,8 +1,6 @@
 package familyaccounting;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 //Abstract class for transactions (expenses and income)
 public class Transaction {

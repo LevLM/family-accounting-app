@@ -3,6 +3,7 @@ package familyaccounting;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeParseException;
 
 public class Main {
 	public static void main(String[] args) {
@@ -36,23 +37,64 @@ public class Main {
 					+ "2 - All transactions sorted by date\n" + "3 - Expenses/incomes by category for the period\n"
 					+ "4 - Expenses/incomes by members for the period\n"
 					+ "5 - Balanse of Expenses/Incomes for the period\n" + "6 - Exit");
+			if (!scanner.hasNextInt()) {
+				System.out.println("Invalid input. Please enter a number from 1 to 6.");
+				scanner.next();
+				continue;
+			}
 			// Read user choice
 			int choice = scanner.nextInt();
 			scanner.nextLine();
 
 			switch (choice) {
 			case 1:
-				System.out.print("Enter amount: ");
-				double amount = scanner.nextDouble();
+				double amount = -1;
+				while (amount <= 0) {
+					System.out.print("Enter amount (positive number): ");
+					if (scanner.hasNextDouble()) {
+						amount = scanner.nextDouble();
+						if (amount <= 0) {
+							System.out.println("Amount must be positive");
+						}
+					} else {
+						System.out.println("Invalid input, please enter a valid number");
+						scanner.next();
+					}
+				}
 				scanner.nextLine();
 				System.out.print("Enter category of Expense/Income: ");
-				String category = scanner.nextLine();
+				String category;
+				while ((category = scanner.nextLine().trim()).isEmpty()) {
+					System.out.print("Category cannot be empty, enter again: ");
+				}
+				LocalDate date = null;
 				System.out.print("Enter date (YYYY-MM-DD): ");
-				LocalDate date = LocalDate.parse(scanner.nextLine());
+				while (date == null) {
+					String dateInput = scanner.nextLine();
+					try {
+						date = LocalDate.parse(dateInput);
+					} catch (DateTimeParseException e) {
+						System.out.println("Invalid date format, try again");
+					}
+				}
 				System.out.print("Enter family member's name: ");
-				FamilyMember member = new FamilyMember(scanner.nextLine());
+				String memberName;
+                while ((memberName = scanner.nextLine().trim()).isEmpty()) {
+                    System.out.print("Family member's name cannot be empty, enter again: ");
+                }
+                FamilyMember member = new FamilyMember(memberName);
+				Boolean isIncome = null;
 				System.out.print("Is this an Income? (true/false): ");
-				boolean isIncome = scanner.nextBoolean();
+				while (isIncome == null) {
+					String incomeInput = scanner.nextLine().toLowerCase();
+					if (incomeInput.equals("true")) {
+						isIncome = true;
+					} else if (incomeInput.equals("false")) {
+						isIncome = false;
+					} else {
+						System.out.println("Invalid input. Enter 'true' or 'false'.");
+					}
+				}
 				app.addTransaction(amount, category, date, member, isIncome);
 				break;
 			case 2:
@@ -75,9 +117,10 @@ public class Main {
 				}
 				break;
 			case 6:
+				scanner.close();
 				return;
 			default:
-				System.out.println("Invalid option. Please try again.");
+				System.out.println("Invalid option, please try again.");
 			}
 		}
 

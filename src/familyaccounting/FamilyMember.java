@@ -7,6 +7,9 @@ public class FamilyMember {
 
 	// Constructor to initialize the name
 	public FamilyMember(String name) {
+		if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Family member name cannot be empty or null");
+        }
 		this.name = name;
 	}
 

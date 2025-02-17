@@ -2,6 +2,7 @@ package familyaccounting;
 
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*; //will need that for comparator
 
 // Class for managing all transactions
@@ -67,6 +68,17 @@ public class FamilyAccountingApp {
 	// Here's result of: TO-DO figure out if we need both
 	// viewTransactionsSortedByDate and viewTransactionsForPeriod - probably can
 	// keep one or even make on method out of both
+
+	// Method to validate date format
+	private LocalDate parseDate(String dateInput) {
+		try {
+			return dateInput.isEmpty() ? null : LocalDate.parse(dateInput);
+		} catch (DateTimeParseException e) {
+			System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+			return null;
+		}
+	}
+
 	public void viewTransactionsByDate() {
 
 		// Asking for the first date of the period or skipping
@@ -77,9 +89,14 @@ public class FamilyAccountingApp {
 		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
 		String endInput = scanner.nextLine();
 
-		// Parse dates or keep them null if empty
-		LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
-		LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+		// Parse dates with validation
+		LocalDate startDate = parseDate(startInput);
+		LocalDate endDate = parseDate(endInput);
+
+		if (startDate == null && endDate == null) {
+			System.out.println("Both dates are invalid, no expenses will be displayed");
+			return;
+		}
 
 		// Filtering and sorting manually
 		List<Transaction> filteredTransactions = new ArrayList<>();
@@ -95,9 +112,15 @@ public class FamilyAccountingApp {
 		filteredTransactions.sort(Comparator.comparing(Transaction::getDate));
 
 		// Printing the filtered and sorted transactions
-		for (Transaction transaction : filteredTransactions) {
-			System.out.println(transaction);
+
+		if (filteredTransactions.isEmpty()) {
+			System.out.println("No transactions found for the selected date range");
+		} else {
+			for (Transaction transaction : filteredTransactions) {
+				System.out.println(transaction);
+			}
 		}
+
 	}
 
 	// Method to view transactions sorted by family member
@@ -189,36 +212,47 @@ public class FamilyAccountingApp {
 		return total; // Return the total expense amount
 	}
 
-    // shows expenses per category for a selected period
+	// shows expenses per category for a selected period
 	public void viewExpensesByCategoryForPeriod() {
 
-	    // Ask the user for the start and end dates
-	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-	    String startInput = scanner.nextLine();
-	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-	    String endInput = scanner.nextLine();
+		// Ask the user for the start and end dates
+		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+		String startInput = scanner.nextLine();
+		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+		String endInput = scanner.nextLine();
 
-	    // Convert input to dates or assign null if skipped
-	    LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
-	    LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+		// Parse dates with validation
+		LocalDate startDate = parseDate(startInput);
+		LocalDate endDate = parseDate(endInput);
 
-	    // Store category expenses in a map
-	    Map<Category, Double> categorySums = new HashMap<>();
+		if (startDate == null && endDate == null) {
+			System.out.println("Both dates are invalid, no expenses will be displayed");
+			return;
+		}
 
-	    // Calculate total expenses for each category
-	    for (Category category : categories) {
-	        double sum = calculateCategorySumForPeriod(category, startDate, endDate);
-	        categorySums.put(category, sum);
-	    }
+		// Store category expenses in a map
+		Map<Category, Double> categorySums = new HashMap<>();
 
-	    // Sort categories by total expenses (descending order) -using hashmap instead of object (cause I actually understand what is happening) DELETE THIS
-	    List<Map.Entry<Category, Double>> sortedList = new ArrayList<>(categorySums.entrySet());
-	    sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+		// Calculate total expenses for each category
+		for (Category category : categories) {
+			double sum = calculateCategorySumForPeriod(category, startDate, endDate);
+			categorySums.put(category, sum);
+		}
 
-	    // Print the result
-	    for (Map.Entry<Category, Double> entry : sortedList) {
-	        System.out.println(entry.getKey().getName() + " / " + entry.getValue());
-	    }
+		// Sort categories by total expenses (descending order) -using hashmap instead
+		// of object (cause I actually understand what is happening) DELETE THIS
+		List<Map.Entry<Category, Double>> sortedList = new ArrayList<>(categorySums.entrySet());
+		sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+
+		// Print the result
+		if (sortedList.isEmpty()) {
+			System.out.println("No expenses found for the selected period");
+		} else {
+			System.out.println("Expenses by category for the selected period:");
+			for (Map.Entry<Category, Double> entry : sortedList) {
+				System.out.println(entry.getKey().getName() + " / " + entry.getValue());
+			}
+		}
 	}
 	// TO-DO test this properly
 
@@ -234,9 +268,14 @@ public class FamilyAccountingApp {
 		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
 		String endInput = scanner.nextLine();
 
-		// If the user didn't provide a date, assign null to the respective variable
-		LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
-		LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+		// Parse dates with validation
+		LocalDate startDate = parseDate(startInput);
+		LocalDate endDate = parseDate(endInput);
+
+		if (startDate == null && endDate == null) {
+			System.out.println("Both dates are invalid, no expenses will be displayed");
+			return 0;
+		}
 
 		// Variables to store total income and total expenses
 		double totalIncome = 0;
@@ -260,8 +299,6 @@ public class FamilyAccountingApp {
 				}
 			}
 		}
-		
-		
 
 		// Calculate the balance (income - expenses)
 		double balance = totalIncome - totalExpenses;
@@ -274,45 +311,54 @@ public class FamilyAccountingApp {
 		// Return the calculated balance
 		return balance;
 	}
-	
+
 	public void viewExpensesByFamilyMemberForPeriod() {
-	 
-	    // Ask the user for the start and end dates of the period
-	    System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-	    String startInput = scanner.nextLine();
-	    System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-	    String endInput = scanner.nextLine();
-	 
-	    // Convert the input to dates or keep them null if the user skips
-	    LocalDate startDate = startInput.isEmpty() ? null : LocalDate.parse(startInput);
-	    LocalDate endDate = endInput.isEmpty() ? null : LocalDate.parse(endInput);
-	 
-	    // Create a Map to store the total expenses for each family member
-	    Map<FamilyMember, Double> memberExpenses = new HashMap<>();
-	 
-	    // Iterate through all transactions and sum up expenses for each family member
-	    for (Transaction transaction : transactions) {
-	        // Check if the transaction is an expense and falls within the specified period
-	        if (!transaction.isIncome() && 
-	            (startDate == null || !transaction.getDate().isBefore(startDate)) &&
-	            (endDate == null || !transaction.getDate().isAfter(endDate))) {
-	 
-	            // Get the family member from the transaction
-	            FamilyMember member = transaction.getMember();
-	 
-	            // Add the transaction amount to the total expenses of the family member
-	            memberExpenses.put(member, memberExpenses.getOrDefault(member, 0.0) + transaction.getAmount());
-	        }
-	    }
-	 
-	    // Sort the family members by total expenses (in descending order)
-	    List<Map.Entry<FamilyMember, Double>> sortedList = new ArrayList<>(memberExpenses.entrySet());
-	    sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
-	 
-	    // Print the result
-	    System.out.println("Expenses by family member for the selected period:");
-	    for (Map.Entry<FamilyMember, Double> entry : sortedList) {
-	        System.out.println(entry.getKey().getName() + " / " + entry.getValue());
-	    }
+
+		// Ask the user for the start and end dates of the period
+		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
+		String startInput = scanner.nextLine();
+		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
+		String endInput = scanner.nextLine();
+
+		// Parse dates with validation
+		LocalDate startDate = parseDate(startInput);
+		LocalDate endDate = parseDate(endInput);
+
+		if (startDate == null && endDate == null) {
+			System.out.println("Both dates are invalid, no expenses will be displayed");
+			return;
+		}
+
+		// Create a Map to store the total expenses for each family member
+		Map<FamilyMember, Double> memberExpenses = new HashMap<>();
+
+		// Iterate through all transactions and sum up expenses for each family member
+		for (Transaction transaction : transactions) {
+			// Check if the transaction is an expense and falls within the specified period
+			if (!transaction.isIncome() && (startDate == null || !transaction.getDate().isBefore(startDate))
+					&& (endDate == null || !transaction.getDate().isAfter(endDate))) {
+
+				// Get the family member from the transaction
+				FamilyMember member = transaction.getMember();
+
+				// Add the transaction amount to the total expenses of the family member
+				memberExpenses.put(member, memberExpenses.getOrDefault(member, 0.0) + transaction.getAmount());
+			}
+		}
+
+		// Sort the family members by total expenses (in descending order)
+		List<Map.Entry<FamilyMember, Double>> sortedList = new ArrayList<>(memberExpenses.entrySet());
+		sortedList.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+
+		// Print the result
+		if (sortedList.isEmpty()) {
+			System.out.println("No expenses found for the selected period");
+		} else {
+			System.out.println("Expenses by family member for the selected period:");
+			for (Map.Entry<FamilyMember, Double> entry : sortedList) {
+				System.out.println(entry.getKey().getName() + " / " + entry.getValue());
+			}
+		}
+
 	}
 }
