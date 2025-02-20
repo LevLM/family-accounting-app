@@ -105,7 +105,7 @@ public class FamilyAccountingApp {
 		FamilyMember existingMember = getOrCreateFamilyMember(member.getName());
 		// adding transaction
 		transactions.add(new Transaction(amount, category, date, existingMember, isIncome));
-		// adding category if doesn't not exist
+		// checking if overbudget
 		checkBudgetWarning(category, amount);
 	}
 
