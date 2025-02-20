@@ -1,6 +1,10 @@
 package familyaccounting;
 
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -454,5 +458,63 @@ public class FamilyAccountingApp {
 
 		return total; // Return the total expense amount
 	}
+	
+	
+//6. Methods to work with saved/load data
+	
+    // Method to save data to a file
+    public void saveDataToFile(String filename) {
+        try (FileWriter writer = new FileWriter(filename)) {
+            // Save transactions
+            for (Transaction transaction : transactions) {
+                writer.write(transactionToString(transaction) + "\n");
+            }
+            System.out.println("✅ Data successfully saved to file: " + filename);
+        } catch (IOException e) {
+            System.out.println("❌ Error saving data: " + e.getMessage());
+        }
+    }
+
+    // Method to load data from a file
+    public void loadDataFromFile(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Transaction transaction = stringToTransaction(line);
+                if (transaction != null) {
+                    transactions.add(transaction);
+                }
+            }
+            System.out.println("✅ Data successfully loaded from file: " + filename);
+        } catch (IOException e) {
+            System.out.println("❌ Error loading data: " + e.getMessage());
+        }
+    }
+
+    // Convert a transaction to a string for saving
+    private String transactionToString(Transaction transaction) {
+        return transaction.getAmount() + "," +
+                transaction.getCategoryExpInc().getName() + "," +
+                transaction.getDate() + "," +
+                transaction.getMember().getName() + "," +
+                transaction.isIncome();
+    }
+
+    // Convert a string back into a transaction
+    private Transaction stringToTransaction(String line) {
+        String[] parts = line.split(",");
+        if (parts.length == 5) {
+            double amount = Double.parseDouble(parts[0]);
+            String categoryName = parts[1];
+            LocalDate date = LocalDate.parse(parts[2]);
+            String memberName = parts[3];
+            boolean isIncome = Boolean.parseBoolean(parts[4]);
+
+            Category category = getOrCreateCategory(categoryName);
+            FamilyMember member = getOrCreateFamilyMember(memberName);
+            return new Transaction(amount, category, date, member, isIncome);
+        }
+        return null;
+    }
 
 }

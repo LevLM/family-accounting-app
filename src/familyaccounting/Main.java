@@ -13,6 +13,7 @@ public class Main {
 
 		// adding sample transactions
 		app.loadSampleTransactions();
+		app.loadDataFromFile("data.txt");
 
 		// Loop for user interaction
 		while (true) {
@@ -21,8 +22,9 @@ public class Main {
 					+ "1 - Add a new transaction\n" + "2 - View all transactions sorted by date\n"
 					+ "3 - View expenses/incomes by category for a period\n"
 					+ "4 - View expenses/incomes by family members for a period\n"
-					+ "5 - View balance of expenses/incomes for a period\n" + "6 - Exit\n"
-					+ "========================================================\n" + "Select an option (1-6): ");
+					+ "5 - View balance of expenses/incomes for a period\n" + "6 - Save data to file\n"
+					+ "7 - Load data from file\n" + "8 - Exit\n"
+					+ "========================================================\n" + "Select an option (1-8): ");
 			if (!scanner.hasNextInt()) {
 				System.out.println("Invalid input. Please enter a number from 1 to 6.");
 				scanner.next();
@@ -46,14 +48,20 @@ public class Main {
 				app.viewExpensesByFamilyMemberForPeriod();
 				break;
 			case 5:
-				app.displayIncomeVsExpensesForPeriod();
-				break;
-			case 6:
-				System.out.println("Exiting... Thank you for using Family Accounting System!");
-				scanner.close();
-				return;
-			default:
-				System.out.println("Invalid option, please try again.");
+                app.displayIncomeVsExpensesForPeriod();
+                break;
+            case 6:
+                app.saveDataToFile("data.txt");
+                break;
+            case 7:
+                app.loadDataFromFile("data.txt");
+                break;
+            case 8:
+                System.out.println("Exiting... Thank you for using Family Accounting System!");
+                scanner.close();
+                return;
+            default:
+                System.out.println("Invalid option, please try again.");
 			}
 		}
 	}
