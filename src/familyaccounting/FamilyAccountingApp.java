@@ -17,7 +17,7 @@ public class FamilyAccountingApp {
 	private List<Category> categories = new ArrayList<>();
 	// Scanner that called in main
 	private Scanner scanner;
-	
+
 	public FamilyAccountingApp(Scanner scanner) {
 		this.scanner = scanner;
 		// Initializing predefined expense categories
@@ -30,7 +30,7 @@ public class FamilyAccountingApp {
 	// Menu that prompts user do add new transaction
 	public void addNewTransaction() {
 		double amount = -1;
-		while (amount <= 0) { 
+		while (amount <= 0) {
 			System.out.print("Enter amount (positive number): ");
 			if (scanner.hasNextDouble()) {
 				amount = scanner.nextDouble();
@@ -52,7 +52,7 @@ public class FamilyAccountingApp {
 
 		LocalDate date = null;
 		while (date == null) {
-			System.out.print("Enter date (YYYY-MM-DD or DD.MM.YYYY): ");
+			System.out.print("Enter date (DD.MM.YYYY or YYYY-MM-DD): ");
 			String dateInput = scanner.nextLine().trim();
 			date = parseDate(dateInput, false);
 		}
@@ -65,20 +65,31 @@ public class FamilyAccountingApp {
 		FamilyMember member = new FamilyMember(memberName);
 
 		Boolean isIncome = null;
-		System.out.print("Is this an Income? (yes/no): ");
+		System.out.print("Is this an expense? (yes/no): ");
 		while (isIncome == null) {
 			String incomeInput = scanner.nextLine().trim().toLowerCase();
 			if (incomeInput.equals("yes") || incomeInput.equals("y")) {
-				isIncome = true;
-			} else if (incomeInput.equals("no") || incomeInput.equals("n")) {
 				isIncome = false;
+			} else if (incomeInput.equals("no") || incomeInput.equals("n")) {
+				isIncome = true;
 			} else {
 				System.out.println("Invalid input. Enter 'yes' or 'no'.");
 			}
 		}
 
-		// Add new transaction
-		addTransaction(amount, category, date, member, isIncome);
+		// Data confirmation
+		System.out.println("\nPlease confirm the details:\n" + "-------------------------------\n" + "Amount: " + amount
+				+ "\n" + "Category: " + category + "\n" + "Date: " + date + "\n" + "Family Member: " + memberName + "\n"
+				+ "Type: " + (isIncome ? "Income" : "Expense") + "\n" + "-------------------------------");
+		System.out.print("Is everything correct? (yes/no): ");
+
+		String confirmation = scanner.nextLine().trim().toLowerCase();
+		if (confirmation.equals("yes") || confirmation.equals("y")) {
+			addTransaction(amount, category, date, member, isIncome);
+			System.out.println("✅ Transaction successfully added!");
+		} else {
+			System.out.println("❌ Canceled. Transaction not saved.");
+		}
 	}
 
 	// Adds a transaction
@@ -263,17 +274,18 @@ public class FamilyAccountingApp {
 		// Return the calculated balance
 		return balance;
 	}
-	
-	//method to show if balance is positive or not. It's a separate method from viewIncomeVsExpensesForPeriod , since the latter returns the number. 
+
+	// method to show if balance is positive or not. It's a separate method from
+	// viewIncomeVsExpensesForPeriod , since the latter returns the number.
 	public void displayIncomeVsExpensesForPeriod() {
-	    double balance = viewIncomeVsExpensesForPeriod();
-	    if (balance > 0) {
-	        System.out.println("Balance of incomes and expenses - Positive");
-	    } else if (balance < 0) {
-	        System.out.println("Balance of incomes and expenses - Negative");
-	    } else {
-	        System.out.println("Balance of incomes and expenses - 0");
-	    }
+		double balance = viewIncomeVsExpensesForPeriod();
+		if (balance > 0) {
+			System.out.println("Balance of incomes and expenses - Positive");
+		} else if (balance < 0) {
+			System.out.println("Balance of incomes and expenses - Negative");
+		} else {
+			System.out.println("Balance of incomes and expenses - 0");
+		}
 	}
 
 	public void viewExpensesByFamilyMemberForPeriod() {
@@ -334,7 +346,7 @@ public class FamilyAccountingApp {
 			try {
 				return LocalDate.parse(dateInput, formatter);
 			} catch (DateTimeParseException e) {
-				// Continue
+//				just continuing
 			}
 		}
 
@@ -374,8 +386,8 @@ public class FamilyAccountingApp {
 
 		return dates;
 	}
-	
-	//method for loading sample transactions
+
+	// method for loading sample transactions
 	public void loadSampleTransactions() {
 		addTransaction(1100.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
 		addTransaction(265.0, "Transport", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);

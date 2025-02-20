@@ -10,17 +10,19 @@ public class Main {
 		// create scanner
 		Scanner scanner = new Scanner(System.in);
 		FamilyAccountingApp app = new FamilyAccountingApp(scanner); // creating object with our logic
-		
+
 		// adding sample transactions
 		app.loadSampleTransactions();
-		
+
 		// Loop for user interaction
 		while (true) {
 			// Display menu options
-			System.out.println("\n1 - Enter transaction of expenses or incomes\n"
-					+ "2 - All transactions sorted by date\n" + "3 - Expenses/incomes by category for the period\n"
-					+ "4 - Expenses/incomes by members for the period\n"
-					+ "5 - Balance of Expenses/Incomes for the period\n" + "6 - Exit");
+			System.out.println("\n================ Family Accounting System ================\n"
+					+ "1 - Add a new transaction\n" + "2 - View all transactions sorted by date\n"
+					+ "3 - View expenses/incomes by category for a period\n"
+					+ "4 - View expenses/incomes by family members for a period\n"
+					+ "5 - View balance of expenses/incomes for a period\n" + "6 - Exit\n"
+					+ "========================================================\n" + "Select an option (1-6): ");
 			if (!scanner.hasNextInt()) {
 				System.out.println("Invalid input. Please enter a number from 1 to 6.");
 				scanner.next();
@@ -44,9 +46,10 @@ public class Main {
 				app.viewExpensesByFamilyMemberForPeriod();
 				break;
 			case 5:
-				 app.displayIncomeVsExpensesForPeriod();
+				app.displayIncomeVsExpensesForPeriod();
 				break;
 			case 6:
+				System.out.println("Exiting... Thank you for using Family Accounting System!");
 				scanner.close();
 				return;
 			default:

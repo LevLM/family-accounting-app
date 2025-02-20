@@ -1,6 +1,7 @@
 package familyaccounting;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 //Abstract class for transactions (expenses and income)
 public class Transaction {
@@ -56,6 +57,11 @@ public class Transaction {
 	// Override for toString for data output (about the transaction)
 	@Override
 	public String toString() {
-		return date + "  category: " + categoryExpInc + "    member: " + member + "    amount: " + amount;
+	    // Define the date format (DD.MM.YYYY)
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+	    // Format the date using the defined format
+	    String formattedDate = date.format(formatter);
+	    // Return the formatted string with category, member, and amount
+	    return formattedDate + "  category: " + categoryExpInc + "    member: " + member + "    amount: " + amount;
 	}
 }
