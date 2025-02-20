@@ -12,6 +12,7 @@ The **Family Accounting System** is a simple console-based Java application desi
 - Calculate the balance of expenses and incomes
 - Set budget limits for specific categories
 - Receive budget warnings when limits are exceeded
+- Back up data
 
   ## Project Structure
 
@@ -62,7 +63,9 @@ Upon running the program, the following menu will be displayed:
 3 - View expenses/incomes by category for a period
 4 - View expenses/incomes by family members for a period
 5 - View balance of expenses/incomes for a period
-6 - Exit
+6 - Save data to file
+7 - Load data from file
+8 - Exit
 ========================================================
 Select an option (1-6):
 ```
