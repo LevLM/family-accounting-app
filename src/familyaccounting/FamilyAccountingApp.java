@@ -398,7 +398,7 @@ public class FamilyAccountingApp {
 		addTransaction(130.0, "childcare", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Mike"), false);
 	}
 
-//4. Methods to handle the budget
+//5. Methods to handle the budget
 
 	// Checks if a category budget is exceeded for this month
 	public void checkBudgetWarning(Category category, double amount) {
