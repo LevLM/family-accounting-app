@@ -2,6 +2,7 @@ package familyaccounting;
 
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*; //will need that for comparator
@@ -373,8 +374,31 @@ public class FamilyAccountingApp {
 
 		return dates;
 	}
+	
+	//method for loading sample transactions
+	public void loadSampleTransactions() {
+		addTransaction(1100.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
+		addTransaction(265.0, "Transport", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
+		addTransaction(120.0, "food", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), false);
+		addTransaction(75.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
+		addTransaction(480.0, "childcare", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), false);
+		addTransaction(3500.0, "salary", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Miny"), true);
+		addTransaction(7155.0, "salary", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), true);
+		addTransaction(3200.0, "salary", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), true);
+		addTransaction(7155.0, "salary", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Donald"), true);
+		addTransaction(2700.0, "salary", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Miny"), true);
+		addTransaction(8350.0, "salary", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Donald"), true);
+		addTransaction(170.0, "childcare", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Miny"), false);
+		addTransaction(300.0, "entertainment", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), false);
+		addTransaction(35.0, "entertainment", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Mike"), false);
+		addTransaction(2900.0, "rent", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
+		addTransaction(2900.0, "rent", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Donald"), false);
+		addTransaction(2900.0, "rent", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Donald"), false);
+		addTransaction(20.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Mike"), false);
+		addTransaction(130.0, "childcare", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Mike"), false);
+	}
 
-//5. Methods to handle the budget
+//4. Methods to handle the budget
 
 	// Checks if a category budget is exceeded for this month
 	public void checkBudgetWarning(Category category, double amount) {
@@ -393,7 +417,6 @@ public class FamilyAccountingApp {
 			if (totalSpentThisMonth + amount > category.getBudget()) {
 				System.out.println("Warning: Budget for category " + category.getName() + " is exceeded this month!");
 			}
-			// TO-DO think if we should warn maybe before before limit exceeded.
 		}
 	}
 

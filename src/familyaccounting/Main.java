@@ -10,26 +10,10 @@ public class Main {
 		// create scanner
 		Scanner scanner = new Scanner(System.in);
 		FamilyAccountingApp app = new FamilyAccountingApp(scanner); // creating object with our logic
-		app.addTransaction(1100.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
-		app.addTransaction(265.0, "Transport", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
-		app.addTransaction(120.0, "food", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), false);
-		app.addTransaction(75.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
-		app.addTransaction(480.0, "childcare", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), false);
-		app.addTransaction(3500.0, "salary", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Miny"), true);
-		app.addTransaction(7155.0, "salary", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), true);
-		app.addTransaction(3200.0, "salary", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), true);
-		app.addTransaction(7155.0, "salary", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Donald"), true);
-		app.addTransaction(2700.0, "salary", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Miny"), true);
-		app.addTransaction(8350.0, "salary", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Donald"), true);
-		app.addTransaction(170.0, "childcare", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Miny"), false);
-		app.addTransaction(300.0, "entertainment", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Miny"), false);
-		app.addTransaction(35.0, "entertainment", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Mike"), false);
-		app.addTransaction(2900.0, "rent", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Donald"), false);
-		app.addTransaction(2900.0, "rent", LocalDate.of(2025, Month.MAY, 01), new FamilyMember("Donald"), false);
-		app.addTransaction(2900.0, "rent", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Donald"), false);
-		app.addTransaction(20.0, "food", LocalDate.of(2025, Month.APRIL, 01), new FamilyMember("Mike"), false);
-		app.addTransaction(130.0, "childcare", LocalDate.of(2025, Month.JUNE, 01), new FamilyMember("Mike"), false);
-
+		
+		// adding sample transactions
+		app.loadSampleTransactions();
+		
 		// Loop for user interaction
 		while (true) {
 			// Display menu options
