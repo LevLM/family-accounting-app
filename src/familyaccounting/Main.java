@@ -84,12 +84,12 @@ public class Main {
                 }
                 FamilyMember member = new FamilyMember(memberName);
 				Boolean isIncome = null;
-				System.out.print("Is this an Income? (true/false): ");
+				System.out.print("Is this an Income? (yes/no): ");
 				while (isIncome == null) {
 					String incomeInput = scanner.nextLine().toLowerCase();
-					if (incomeInput.equals("true")) {
+					if (incomeInput.equalsIgnoreCase("yes") || incomeInput.equalsIgnoreCase("y")) {
 						isIncome = true;
-					} else if (incomeInput.equals("false")) {
+					} else if (incomeInput.equalsIgnoreCase("no") || incomeInput.equalsIgnoreCase("n")) {
 						isIncome = false;
 					} else {
 						System.out.println("Invalid input. Enter 'true' or 'false'.");

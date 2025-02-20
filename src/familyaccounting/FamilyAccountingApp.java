@@ -2,6 +2,7 @@ package familyaccounting;
 
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*; //will need that for comparator
 
@@ -70,34 +71,64 @@ public class FamilyAccountingApp {
 	// keep one or even make on method out of both
 
 	// Method to validate date format
-	private LocalDate parseDate(String dateInput) {
-		try {
-			return dateInput.isEmpty() ? null : LocalDate.parse(dateInput);
-		} catch (DateTimeParseException e) {
-			System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-			return null;
-		}
+	private LocalDate parseDate(String dateInput, boolean allowSkip) {
+	    if (allowSkip && dateInput.isEmpty()) {
+	        return null; // Skip entry if allowed
+	    }
+
+	    // Define to data formats (creating an array that we can use to easliy flip through formats, very easy to add more)
+	    DateTimeFormatter[] formatters = {
+	        DateTimeFormatter.ofPattern("yyyy-MM-dd"), //  YYYY-MM-DD
+	        DateTimeFormatter.ofPattern("dd.MM.yyyy")  //  DD.MM.YYYY
+	    };
+
+	    // Try parsing the data in each format
+	    for (DateTimeFormatter formatter : formatters) {
+	        try {
+	            return LocalDate.parse(dateInput, formatter);
+	        } catch (DateTimeParseException e) {
+	            // Continue
+	        }
+	    }
+
+	    // Entry is not valid to any format
+	    System.out.println("Invalid date format. Please use YYYY-MM-DD or DD.MM.YYYY.");
+	    return null;
+	}
+	
+	//Method for getting date ranges from Users, or letting them skip data.
+	private LocalDate[] getDatesFromUser(boolean allowSkip) {
+	    LocalDate[] dates = new LocalDate[2];
+	    boolean isValid = false;
+
+	    while (!isValid) {
+	        // Asking for "from" date. changing text in case we allow skip data entry. Also ternary operator is used for this too look readable. 
+	        System.out.print("Enter start date (YYYY-MM-DD or DD.MM.YYYY)" + (allowSkip ? " or press Enter to skip: " : ": "));
+	        String startInput = scanner.nextLine();
+	        dates[0] = parseDate(startInput, allowSkip);
+
+	        // Asking for "to" date
+	        System.out.print("Enter end date (YYYY-MM-DD or DD.MM.YYYY)" + (allowSkip ? " or press Enter to skip: " : ": "));
+	        String endInput = scanner.nextLine();
+	        dates[1] = parseDate(endInput, allowSkip);
+
+	        // Check if both dates are valid and 
+	        if (dates[0] != null && dates[1] != null && dates[0].isAfter(dates[1])) { //isAfter() is part of LocalDate class, you can't really use a comparator here.
+	            System.out.println("Error: Start date cannot be after end date. Please try again.");
+	        } else {
+	            isValid = true; // End cycle if range is valid.
+	        }
+	    }
+
+	    return dates;
 	}
 
 	public void viewTransactionsByDate() {
 
-		// Asking for the first date of the period or skipping
-		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-		String startInput = scanner.nextLine();
-
-		// Asking for the last date of the period or skipping
-		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-		String endInput = scanner.nextLine();
-
-		// Parse dates with validation
-		LocalDate startDate = parseDate(startInput);
-		LocalDate endDate = parseDate(endInput);
-
-		if (startDate == null && endDate == null) {
-			System.out.println("Both dates are invalid, no expenses will be displayed");
-			return;
-		}
-
+	        LocalDate[] dates = getDatesFromUser(true); // True - as allow skipping data
+	        LocalDate startDate = dates[0];
+	        LocalDate endDate = dates[1];
+	        
 		// Filtering and sorting manually
 		List<Transaction> filteredTransactions = new ArrayList<>();
 		for (Transaction transaction : transactions) {
@@ -215,20 +246,9 @@ public class FamilyAccountingApp {
 	// shows expenses per category for a selected period
 	public void viewExpensesByCategoryForPeriod() {
 
-		// Ask the user for the start and end dates
-		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-		String startInput = scanner.nextLine();
-		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-		String endInput = scanner.nextLine();
-
-		// Parse dates with validation
-		LocalDate startDate = parseDate(startInput);
-		LocalDate endDate = parseDate(endInput);
-
-		if (startDate == null && endDate == null) {
-			System.out.println("Both dates are invalid, no expenses will be displayed");
-			return;
-		}
+        LocalDate[] dates = getDatesFromUser(false); // False - as not allow skipping data
+        LocalDate startDate = dates[0];
+        LocalDate endDate = dates[1];
 
 		// Store category expenses in a map
 		Map<Category, Double> categorySums = new HashMap<>();
@@ -260,22 +280,9 @@ public class FamilyAccountingApp {
 	// selected period
 	public double viewIncomeVsExpensesForPeriod() {
 
-		// Asking for the first date of the period or skipping
-		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-		String startInput = scanner.nextLine();
-
-		// Asking for the last date of the period or skipping
-		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-		String endInput = scanner.nextLine();
-
-		// Parse dates with validation
-		LocalDate startDate = parseDate(startInput);
-		LocalDate endDate = parseDate(endInput);
-
-		if (startDate == null && endDate == null) {
-			System.out.println("Both dates are invalid, no expenses will be displayed");
-			return 0;
-		}
+        LocalDate[] dates = getDatesFromUser(false); // flase - as not allow skipping data
+        LocalDate startDate = dates[0];
+        LocalDate endDate = dates[1];
 
 		// Variables to store total income and total expenses
 		double totalIncome = 0;
@@ -314,20 +321,9 @@ public class FamilyAccountingApp {
 
 	public void viewExpensesByFamilyMemberForPeriod() {
 
-		// Ask the user for the start and end dates of the period
-		System.out.print("Enter start date (YYYY-MM-DD) or press Enter to skip: ");
-		String startInput = scanner.nextLine();
-		System.out.print("Enter end date (YYYY-MM-DD) or press Enter to skip: ");
-		String endInput = scanner.nextLine();
-
-		// Parse dates with validation
-		LocalDate startDate = parseDate(startInput);
-		LocalDate endDate = parseDate(endInput);
-
-		if (startDate == null && endDate == null) {
-			System.out.println("Both dates are invalid, no expenses will be displayed");
-			return;
-		}
+        LocalDate[] dates = getDatesFromUser(false); // flase - as not allow skipping data
+        LocalDate startDate = dates[0];
+        LocalDate endDate = dates[1];
 
 		// Create a Map to store the total expenses for each family member
 		Map<FamilyMember, Double> memberExpenses = new HashMap<>();
