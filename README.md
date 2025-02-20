@@ -1,96 +1,96 @@
 # Family Accounting App
 
-A simple command-line Java application for tracking family expenses and incomes. Users can add transactions, view records by date, category, and family member, and analyze the balance of incomes and expenses.
+The **Family Accounting System** is a simple console-based Java application designed to help families track their incomes and expenses. Users can add transactions, categorize expenses, view reports based on categories or family members, and analyze income vs expenses for a selected period.
 
 ## Features
 
-- Add transactions (expenses or incomes)
-- View all transactions sorted by date
+- Add new transactions (income or expense)
+- View transactions sorted by date
 - Analyze expenses and incomes by category for a selected period
 - Analyze expenses and incomes by family members for a selected period
+- View total income vs expenses balance
 - Calculate the balance of expenses and incomes
-- Set budgets for categories and receive warnings when exceeded
+- Set budget limits for specific categories
+- Receive budget warnings when limits are exceeded
 
-## Installation
+  ## Project Structure
 
-1. Clone the repository:
+```
+FamilyAccountingSystem/
+│── src/
+│   ├── familyaccounting/
+│   │   ├── Main.java                # Entry point of the application
+│   │   ├── FamilyAccountingApp.java # Core logic of the accounting system
+│   │   ├── Transaction.java         # Class representing a financial transaction
+│   │   ├── Category.java            # Class representing a spending/income category
+│   │   ├── FamilyMember.java        # Class representing a family member
+│── README.md                        # Project documentation
+│── pom.xml (if using Maven)         # Maven configuration file
+│── build.gradle (if using Gradle)   # Gradle configuration file
+```
+
+### Prerequisites
+
+- Java Development Kit (JDK) 8 or later
+- Git (optional, for cloning repository)
+
+### Steps to Run
+
+1. Clone the repository (if using Git):
     
     ```
-    git clone https://github.com/your-username/family-accounting.git
-    
+    git clone https://github.com/yourusername/FamilyAccountingSystem.git
+    cd FamilyAccountingSystem
     ```
     
-2. Navigate to the project directory:
+2. Compile and run the project:
     
     ```
-    cd family-accounting
-    
-    ```
-    
-3. Compile the project:
-    
-    ```
-    javac -d out src/familyaccounting/*.java
-    
-    ```
-    
-4. Run the application:
-    
-    ```
-    java -cp out familyaccounting.Main
-    
+    javac -d bin src/familyaccounting/*.java
+    java -cp bin familyaccounting.Main
     ```
     
 
 ## Usage
 
-Upon running the application, you will be presented with a menu:
+Upon running the program, the following menu will be displayed:
 
 ```
-1 - Enter transaction of expenses or incomes
-2 - All transactions sorted by date
-3 - Expenses/incomes by category for the period
-4 - Expenses/incomes by members for the period
-5 - Balance of Expenses/Incomes for the period
+================ Family Accounting System ================
+1 - Add a new transaction
+2 - View all transactions sorted by date
+3 - View expenses/incomes by category for a period
+4 - View expenses/incomes by family members for a period
+5 - View balance of expenses/incomes for a period
 6 - Exit
-
+========================================================
+Select an option (1-6):
 ```
 
-Follow the on-screen prompts to interact with the app.
-
-## Example
-
-To add a new transaction:
-
-1. Select option `1`.
-2. Enter the transaction amount.
-3. Provide the category of the transaction.
-4. Enter the transaction date in `YYYY-MM-DD` format.
-5. Specify the family member responsible.
-6. Indicate whether it is an income (`true/false`).
-
-## Project Structure
+### Example Transaction
 
 ```
-familyaccounting/
-│── Main.java               # Entry point of the application
-│── FamilyAccountingApp.java # Core logic for managing transactions
-│── Transaction.java         # Represents a transaction (expense or income)
-│── FamilyMember.java        # Represents a family member
-│── Category.java            # Represents a transaction category
-
+Enter amount (positive number): 100.50
+Enter category of Expense/Income: food
+Enter date (DD.MM.YYYY or YYYY-MM-DD): 2025-02-15
+Enter family member's name: John
+Is this an expense? (yes/no): yes
+✅ Transaction successfully added!
 ```
 
-## To-Do
+### Example Report
 
-- Improve transaction filtering and reporting
-- Add data persistence (saving transactions to a file or database)
-- Implement a graphical user interface
+```
+Total Income: 5000.0
+Total Expenses: 3500.0
+Balance: 1500.0
+Balance of incomes and expenses - Positive
+```
 
 ## Contributing
 
-Feel free to submit issues or contribute by creating a pull request.
-
-## License
-
-This project is licensed under the MIT License.
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-branch`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature-branch`)
+5. Create a Pull Request
