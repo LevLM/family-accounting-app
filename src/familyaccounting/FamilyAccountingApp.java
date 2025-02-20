@@ -29,7 +29,7 @@ public class FamilyAccountingApp {
 				new Category("entertainment"), new Category("healthcare"), new Category("childcare")));
 	}
 
-// 1. Methods for adding data 
+// 1. Methods for adding data and prompting for this
 
 	// Menu that prompts user do add new transaction
 	public void addNewTransaction() {
