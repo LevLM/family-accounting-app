@@ -26,8 +26,6 @@ FamilyAccountingSystem/
 │   │   ├── Category.java            # Class representing a spending/income category
 │   │   ├── FamilyMember.java        # Class representing a family member
 │── README.md                        # Project documentation
-│── pom.xml (if using Maven)         # Maven configuration file
-│── build.gradle (if using Gradle)   # Gradle configuration file
 ```
 
 ### Prerequisites
